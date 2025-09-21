@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>与古人对话 - 历史穿越</title>
+    <link rel="stylesheet" href="chat-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 引入marked.js用于Markdown渲染 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <!-- 确保marked库加载完成后再执行脚本 -->
+    <script>
+        // 等待marked库加载完成
+        window.addEventListener('load', function() {
+            if (typeof marked !== 'undefined') {
+                console.log('Marked库已成功加载，版本:', marked.version || 'unknown');
+                
+                // 测试marked库的基本功能
+                const testMarkdown = '# Hello, Markdown!\n\nThis is a *paragraph* with **markdown** syntax.';
+                try {
+                    const testHtml = marked.parse(testMarkdown);
+                    console.log('Marked库测试成功:', testHtml);
+                } catch (error) {
+                    console.error('Marked库测试失败:', error);
+                }
+            } else {
+                console.error('Marked库加载失败');
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- 聊天头部 -->
+        <header class="chat-header">
+            <button class="back-btn" onclick="goBack()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="chat-info">
+                <div class="character-avatar">
+                    <div id="chatAvatar" class="avatar-circle">
+                        <span id="avatarText">古</span>
+                    </div>
+                </div>
+                <div class="character-details">
+                    <h2 id="characterName">历史人物</h2>
+                    <p id="eventContext">历史事件</p>
+                </div>
+            </div>
+            <div class="chat-actions">
+                <button class="action-btn" onclick="clearChat()" title="清空对话">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 聊天消息区域 -->
+        <main class="chat-messages" id="chatMessages">
+            <div class="welcome-message">
+                <div class="welcome-content">
+                    <h3>欢迎来到历史时空</h3>
+                    <p>您已成功穿越到<span id="welcomeEvent">历史事件</span>时期</p>
+                    <p>现在可以与<span id="welcomeCharacter">历史人物</span>开始对话了</p>
+                </div>
+            </div>
+        </main>
+         <!-- 加载状态 -->
+        <div id="typingIndicator" class="typing-indicator" style="display: none;">
+            <div class="typing-content">
+                <div class="typing-avatar">
+                    <span id="typingAvatarText">古</span>
+                </div>
+                <div class="typing-bubble">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 输入区域 -->
+        <footer class="chat-input-area">
+            <div class="input-container">
+                <textarea 
+                    id="messageInput" 
+                    placeholder="输入您想对古人说的话..." 
+                    rows="1"
+                    maxlength="500"
+                ></textarea>
+                <button id="sendBtn" class="send-btn" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="input-footer">
+                <span class="char-count">0/500</span>
+                <span class="tips">按 Enter 发送，Shift+Enter 换行</span>
+            </div>
+        </footer>
+
+       
+    </div>
+
+    <!-- 错误提示模态框 -->
+    <div id="errorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>连接异常</h3>
+                <button class="close-btn" onclick="closeErrorModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">网络连接异常，请检查网络设置或稍后重试。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeErrorModal()">关闭</button>
+                <button class="btn-primary" onclick="retryLastMessage()">重试</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="chat-script.js"></script>
+</body>
+</html>

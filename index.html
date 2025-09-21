@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史穿越 - 与古人对话</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1 class="title">历史穿越</h1>
+            <p class="subtitle">与千年古人对话，体验历史风云</p>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 自由输入区域 -->
+            <section class="custom-input-section">
+                <h2 class="section-title">自定义历史对话</h2>
+                <div class="custom-input-form">
+                    <div class="input-group">
+                        <label for="customCharacter">历史人物</label>
+                        <input type="text" id="customCharacter" placeholder="请输入历史人物姓名，如：刘备、曹操、孙权..." maxlength="20">
+                    </div>
+                    <div class="input-group">
+                        <label for="customEvent">历史事件/时期</label>
+                        <input type="text" id="customEvent" placeholder="请输入历史事件或时期，如：三国鼎立、赤壁之战..." maxlength="30">
+                    </div>
+                    <div class="button-group">
+                        <button class="start-custom-chat-btn" id="startCustomChatBtn">
+                            <span>开始对话</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                        <button id="travelBtn" class="travel-btn" disabled>
+                            <span class="btn-text" id="travelBtnText">穿越</span>
+                            <span class="btn-icon">⚡</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+
+            <!-- 生成的图片显示区域 -->
+            <section class="image-section" id="imageSection" style="display: none;">
+                <h2 class="section-title">穿越成功！</h2>
+                <div class="generated-image">
+                    <img id="generatedImage" src="" alt="穿越后的场景">
+                </div>
+                <div class="button-group">
+                    <button id="startChatBtn" class="start-chat-btn">
+                        <span class="btn-text">开始对话</span>
+                        <span class="btn-icon">💬</span>
+                    </button>
+                </div>
+            </section>
+
+
+            <!-- 快捷对话区域 -->
+            <section class="quick-chat-section">
+                <h2 class="section-title">快捷对话</h2>
+                <p class="section-subtitle">直接开始与历史人物的精彩对话</p>
+                <div class="quick-chat-grid">
+                    <button class="quick-chat-btn" data-character="刘备" data-event="三国鼎立">
+                        <div class="quick-chat-avatar">
+                            <svg viewBox="0 0 100 100" class="avatar-svg">
+                                <circle cx="50" cy="50" r="45" fill="#FFD700" />
+                                <text x="50" y="60" text-anchor="middle" fill="white" font-size="16">刘</text>
+                            </svg>
+                        </div>
+                        <div class="quick-chat-info">
+                            <h3>刘备 × 三国鼎立</h3>
+                            <p>与仁德之君探讨王道治国</p>
+                        </div>
+                        <span class="quick-chat-icon">💬</span>
+                    </button>
+
+                    <button class="quick-chat-btn" data-character="曹操" data-event="三国鼎立">
+                        <div class="quick-chat-avatar">
+                            <svg viewBox="0 0 100 100" class="avatar-svg">
+                                <circle cx="50" cy="50" r="45" fill="#8B0000" />
+                                <text x="50" y="60" text-anchor="middle" fill="white" font-size="16">曹</text>
+                            </svg>
+                        </div>
+                        <div class="quick-chat-info">
+                            <h3>曹操 × 三国鼎立</h3>
+                            <p>与魏武帝论霸业雄心</p>
+                        </div>
+                        <span class="quick-chat-icon">💬</span>
+                    </button>
+
+                    <button class="quick-chat-btn" data-character="诸葛亮" data-event="三国鼎立">
+                        <div class="quick-chat-avatar">
+                            <svg viewBox="0 0 100 100" class="avatar-svg">
+                                <circle cx="50" cy="50" r="45" fill="#228B22" />
+                                <text x="50" y="60" text-anchor="middle" fill="white" font-size="16">诸</text>
+                            </svg>
+                        </div>
+                        <div class="quick-chat-info">
+                            <h3>诸葛亮 × 三国鼎立</h3>
+                            <p>与卧龙先生论天下大势</p>
+                        </div>
+                        <span class="quick-chat-icon">💬</span>
+                    </button>
+
+                    <button class="quick-chat-btn" data-character="孙权" data-event="三国鼎立">
+                        <div class="quick-chat-avatar">
+                            <svg viewBox="0 0 100 100" class="avatar-svg">
+                                <circle cx="50" cy="50" r="45" fill="#4169E1" />
+                                <text x="50" y="60" text-anchor="middle" fill="white" font-size="16">孙</text>
+                            </svg>
+                        </div>
+                        <div class="quick-chat-info">
+                            <h3>孙权 × 三国鼎立</h3>
+                            <p>与吴大帝谈江东基业</p>
+                        </div>
+                        <span class="quick-chat-icon">💬</span>
+                    </button>
+
+                    <button class="quick-chat-btn" data-character="关羽" data-event="三国鼎立">
+                        <div class="quick-chat-avatar">
+                            <svg viewBox="0 0 100 100" class="avatar-svg">
+                                <circle cx="50" cy="50" r="45" fill="#DC143C" />
+                                <text x="50" y="60" text-anchor="middle" fill="white" font-size="16">关</text>
+                            </svg>
+                        </div>
+                        <div class="quick-chat-info">
+                            <h3>关羽 × 三国鼎立</h3>
+                            <p>与武圣探讨忠义之道</p>
+                        </div>
+                        <span class="quick-chat-icon">💬</span>
+                    </button>
+
+                    <button class="quick-chat-btn" data-character="周瑜" data-event="三国鼎立">
+                        <div class="quick-chat-avatar">
+                            <svg viewBox="0 0 100 100" class="avatar-svg">
+                                <circle cx="50" cy="50" r="45" fill="#8A2BE2" />
+                                <text x="50" y="60" text-anchor="middle" fill="white" font-size="16">周</text>
+                            </svg>
+                        </div>
+                        <div class="quick-chat-info">
+                            <h3>周瑜 × 三国鼎立</h3>
+                            <p>与美周郎论兵法韬略</p>
+                        </div>
+                        <span class="quick-chat-icon">💬</span>
+                    </button>
+                </div>
+            </section>
+
+
+        </main>
+
+        <!-- 加载状态 -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">正在穿越时空...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
