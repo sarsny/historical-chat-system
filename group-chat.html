@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史群聊 - 与多位古人对话</title>
+    <link rel="stylesheet" href="group-chat-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 引入marked.js用于Markdown渲染 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+</head>
+<body>
+    <div class="group-chat-container">
+        <!-- 群聊头部 -->
+        <header class="group-chat-header">
+            <button class="back-btn" onclick="goBack()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="group-info">
+                <div class="group-avatar">
+                    <div class="avatar-stack" id="groupAvatarStack">
+                        <!-- 动态生成的头像堆叠 -->
+                    </div>
+                </div>
+                <div class="group-details">
+                    <h2 id="groupTitle">历史群聊</h2>
+                    <p id="eventContext">历史事件背景</p>
+                    <div class="participants-count">
+                        <span id="participantsCount">0</span> 位历史人物参与
+                    </div>
+                </div>
+            </div>
+            <div class="group-actions">
+                <button class="action-btn" onclick="showParticipants()" title="参与者列表">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="action-btn" onclick="clearGroupChat()" title="清空对话">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 参与者面板 -->
+        <div class="participants-panel" id="participantsPanel">
+            <div class="panel-header">
+                <h3>参与的历史人物</h3>
+                <button class="close-panel-btn" onclick="hideParticipants()">×</button>
+            </div>
+            <div class="participants-list" id="participantsList">
+                <!-- 动态生成的参与者列表 -->
+            </div>
+            <div class="add-participant">
+                <button class="add-participant-btn" onclick="showAddParticipant()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    添加历史人物
+                </button>
+            </div>
+        </div>
+
+        <!-- 添加参与者模态框 -->
+        <div class="add-participant-modal" id="addParticipantModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>添加历史人物</h3>
+                    <button class="close-modal-btn" onclick="hideAddParticipant()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="newCharacterName">历史人物姓名</label>
+                        <input type="text" id="newCharacterName" placeholder="如：刘备、曹操、孙权..." maxlength="20">
+                    </div>
+                    <div class="suggested-characters">
+                        <h4>推荐人物</h4>
+                        <div class="character-chips" id="suggestedCharacters">
+                            <!-- 动态生成的推荐人物 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="cancel-btn" onclick="hideAddParticipant()">取消</button>
+                    <button class="confirm-btn" onclick="addParticipant()">添加</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 群聊消息区域 -->
+        <main class="group-chat-messages" id="groupChatMessages">
+            <div class="welcome-message">
+                <div class="welcome-content">
+                    <h3>欢迎来到历史群聊</h3>
+                    <p>您已进入<span id="welcomeEvent">历史事件</span>的时空</p>
+                    <p>多位历史人物将与您一起讨论这个时代的风云变幻</p>
+                    <div class="welcome-tip">
+                        💡 提示：您可以@特定人物来指定对话对象，或直接发送消息让所有人参与讨论
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 多人输入状态指示器 -->
+        <div id="multiTypingIndicator" class="multi-typing-indicator" style="display: none;">
+            <div class="typing-users" id="typingUsers">
+                <!-- 动态显示正在输入的用户 -->
+            </div>
+        </div>
+
+        <!-- 消息输入区域 -->
+        <footer class="group-message-input">
+            <div class="input-container">
+                <div class="mention-suggestions" id="mentionSuggestions" style="display: none;">
+                    <!-- @提及建议 -->
+                </div>
+                <div class="input-wrapper">
+                    <textarea 
+                        id="groupMessageInput" 
+                        placeholder="输入消息...（可以使用@来提及特定人物）" 
+                        rows="1"
+                        maxlength="500"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button class="emoji-btn" onclick="toggleEmojiPicker()" title="表情">
+                            😊
+                        </button>
+                        <button class="send-btn" id="groupSendBtn" onclick="sendGroupMessage()" disabled>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-info">
+                    <span class="char-count">0/500</span>
+                    <span class="input-tip">Enter发送，Shift+Enter换行</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 错误提示模态框 -->
+    <div id="errorModal" class="error-modal" style="display: none;">
+        <div class="error-content">
+            <div class="error-icon">⚠️</div>
+            <h3>出现错误</h3>
+            <p id="errorMessage">网络连接异常，请稍后重试</p>
+            <div class="error-actions">
+                <button class="retry-btn" onclick="retryLastMessage()">重试</button>
+                <button class="close-error-btn" onclick="closeErrorModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="group-chat-script.js"></script>
+</body>
+</html>

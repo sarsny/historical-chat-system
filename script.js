@@ -36,6 +36,9 @@ const customCharacterInput = document.getElementById('customCharacter');
 const customEventInput = document.getElementById('customEvent');
 const startCustomChatBtn = document.getElementById('startCustomChatBtn');
 
+// 群聊模式元素
+const groupChatBtns = document.querySelectorAll('.group-chat-btn');
+
 // 初始化事件监听器
 function initEventListeners() {
     // 历史人物选择
@@ -61,6 +64,11 @@ function initEventListeners() {
     const quickChatBtns = document.querySelectorAll('.quick-chat-btn');
     quickChatBtns.forEach(btn => {
         btn.addEventListener('click', () => handleQuickChat(btn));
+    });
+
+    // 群聊模式按钮
+    groupChatBtns.forEach(btn => {
+        btn.addEventListener('click', () => handleGroupChat(btn));
     });
 
     // 监听自定义输入变化，实时更新穿越按钮状态
@@ -343,6 +351,20 @@ function handleCustomChat() {
     
     // 跳转到聊天页面
     window.location.href = 'chat.html';
+}
+
+// 处理群聊模式
+function handleGroupChat(btn) {
+    const card = btn.closest('.group-chat-card');
+    const event = card.dataset.event;
+    
+    if (card.classList.contains('custom-group')) {
+        // 自定义群聊 - 跳转到群聊页面让用户自定义
+        window.location.href = `group-chat.html`;
+    } else {
+        // 预设群聊 - 直接跳转到群聊页面并传递事件参数
+        window.location.href = `group-chat.html?event=${encodeURIComponent(event)}`;
+    }
 }
 
 // 处理快捷对话按钮点击
